@@ -1,9 +1,9 @@
 import os
 import sys
+import subprocess
 
 def list_directory():
-    for item in os.listdir():
-        print(item)
+    subprocess.run(["ls"])
 
 def change_directory(path):
     try:
@@ -12,14 +12,31 @@ def change_directory(path):
         print(f"Directory '{path}' not found")
 
 def read_file(filename):
-    try:
-        with open(filename, 'r') as file:
-            print(file.read())
-    except FileNotFoundError:
-        print(f"File '{filename}' not found")
+    subprocess.run(["cat", filename])
 
 def echo_message(message):
     print(message)
+
+def make_directory(dirname):
+    subprocess.run(["mkdir", dirname])
+
+def remove_directory(dirname):
+    subprocess.run(["rmdir", dirname])
+
+def copy_file(src, dest):
+    subprocess.run(["cp", src, dest])
+
+def move_file(src, dest):
+    subprocess.run(["mv", src, dest])
+
+def remove_file(filename):
+    subprocess.run(["rm", filename])
+
+def print_working_directory():
+    subprocess.run(["pwd"])
+
+def list_processes():
+    subprocess.run(["ps", "aux"])
 
 def exit_sysco():
     print("Exiting Sysco Command Prompt")
@@ -31,6 +48,13 @@ commands = {
     'cd': change_directory,
     'cat': read_file,
     'echo': echo_message,
+    'mkdir': make_directory,
+    'rmdir': remove_directory,
+    'cp': copy_file,
+    'mv': move_file,
+    'rm': remove_file,
+    'pwd': print_working_directory,
+    'ps': list_processes,
     'exit': exit_sysco
 }
 
@@ -58,3 +82,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

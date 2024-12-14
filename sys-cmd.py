@@ -21,34 +21,38 @@ def read_file(filename):
 def echo_message(message):
     print(message)
 
+def exit_sysco():
+    print("Exiting Sysco Command Prompt")
+    sys.exit()
+
+# Command dictionary
+commands = {
+    'ls': list_directory,
+    'cd': change_directory,
+    'cat': read_file,
+    'echo': echo_message,
+    'exit': exit_sysco
+}
+
 def main():
     print("Sysco Command Prompt")
     while True:
         current_dir = os.getcwd()
-        command = input(f"{current_dir} $ ").strip().split()
-        if not command:
+        command_input = input(f"{current_dir} $ ").strip().split()
+        if not command_input:
             continue
 
-        cmd = command[0]
-        args = command[1:]
+        cmd = command_input[0]
+        args = command_input[1:]
 
-        if cmd == 'ls':
-            list_directory()
-        elif cmd == 'cd':
-            if args:
-                change_directory(args[0])
-            else:
-                print("Please specify a directory")
-        elif cmd == 'cat':
-            if args:
-                read_file(args[0])
-            else:
-                print("Please specify a file")
-        elif cmd == 'echo':
-            echo_message(' '.join(args))
-        elif cmd == 'exit':
-            print("Exiting Sysco Command Prompt")
-            sys.exit()
+        if cmd in commands:
+            try:
+                if args:
+                    commands[cmd](*args)
+                else:
+                    commands[cmd]()
+            except TypeError:
+                print(f"Invalid arguments for command: {cmd}")
         else:
             print(f"Unknown command: {cmd}")
 
